@@ -6,14 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import org.sopt.and4ever.core.theme.AND4EVERTheme
+import org.sopt.and4ever.core.theme.JPTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AND4EVERTheme {
+            JPTheme {
                 JPNavigation(modifier = Modifier.fillMaxSize())
             }
         }
