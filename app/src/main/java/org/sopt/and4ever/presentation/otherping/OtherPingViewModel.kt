@@ -2,9 +2,7 @@ package org.sopt.and4ever.presentation.otherping
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.sopt.and4ever.data.service.MyPingService
 import org.sopt.and4ever.data.service.OtherPingService
-import org.sopt.and4ever.presentation.myping.MyPingViewModel
 
 class OtherPingViewModel(
     private val otherPingService: OtherPingService
