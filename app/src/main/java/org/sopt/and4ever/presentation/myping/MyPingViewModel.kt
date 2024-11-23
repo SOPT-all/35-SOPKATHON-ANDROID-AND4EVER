@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -23,17 +24,20 @@ class MyPingViewModel(
 
     val myPings = pingFilter.flatMapLatest {
         flow {
-            //emit(myPingService.fetchMyPingList(it))
-            emit(MyPingList(
-                listOf(
-                    MyPing(1, "ping1", "2021-10-01", "success"),
-                    MyPing(2, "ping2", "2021-10-02", "success"),
-                    MyPing(3, "ping3", "2021-10-03", "success"),
-                    MyPing(4, "ping4", "2021-10-04", "success"),
-                    MyPing(5, "ping5", "2021-10-05", "success"),
-                )
-            ))
+            emit(myPingService.fetchMyPingList(it.name.lowercase()))
+//            emit(MyPingList(
+//                listOf(
+//                    MyPing(1, "ping1", "2021-10-01T01:01:01", "success"),
+//                    MyPing(2, "ping2", "2021-10-02T01:01:01", "fail"),
+//                    MyPing(3, "ping3", "2021-10-03T01:01:01", "success"),
+//                    MyPing(4, "ping4", "2021-10-04T01:01:01", "success"),
+//                    MyPing(5, "ping5", "2021-10-05T01:01:01", "pending"),
+//                )
+//            ))
         }
+    }.catch {
+        println("error: $it")
+        emit(MyPingList(listOf()))
     }.map {
         it.pingList
     }.stateIn(
