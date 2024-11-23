@@ -17,11 +17,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxColors
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +36,8 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.sopt.and4ever.R
 import org.sopt.and4ever.core.theme.Body03
 import org.sopt.and4ever.core.theme.Body04
@@ -59,7 +63,9 @@ fun MyPingDetailScreen(
         )
     ),
     navigateToMyPing: () -> Unit,
-    popUp: () -> Unit
+    popUp: () -> Unit,
+    snackbarState: SnackbarHostState,
+    coroutineScope: CoroutineScope
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
@@ -75,6 +81,9 @@ fun MyPingDetailScreen(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is MyPingDetailSideEffect.ShowToast -> {
+                        coroutineScope.launch{
+                            snackbarState.showSnackbar(message = sideEffect.message)
+                        }
                         navigateToMyPing()
                     }
                 }

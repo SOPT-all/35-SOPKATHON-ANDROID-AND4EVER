@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,6 +16,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +38,7 @@ import org.sopt.and4ever.presentation.home.HomeScreen
 import org.sopt.and4ever.presentation.input.InputScreen
 import org.sopt.and4ever.presentation.myping.MyPingScreen
 import org.sopt.and4ever.presentation.mypingdetail.MyPingDetailScreen
+import org.sopt.and4ever.presentation.mypingdetail.MyPingDetailSnackBar
 import org.sopt.and4ever.presentation.otherping.OtherPingScreen
 import org.sopt.and4ever.presentation.result.ResultScreen
 
@@ -51,8 +55,16 @@ fun JPNavigation(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute by remember { derivedStateOf { navBackStackEntry?.destination?.route } }
 
+    val snackbarHostState = remember{ SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
     Scaffold(
         modifier = modifier.systemBarsPadding(),
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState
+            ){ MyPingDetailSnackBar() }
+        },
         bottomBar = {
             BottomNavigationBar(
                 selectedItem = selectedMainBottomTab,
@@ -128,7 +140,9 @@ fun JPNavigation(
                                 }
                             }
                         },
-                        navigateToMyPing = { navController.navigate(Route.MyPing) }
+                        navigateToMyPing = { navController.navigate(Route.MyPing) },
+                        snackbarState = snackbarHostState,
+                        coroutineScope = coroutineScope
                     )
                 }
 
