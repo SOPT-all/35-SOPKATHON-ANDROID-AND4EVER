@@ -1,4 +1,4 @@
-package org.sopt.and4ever
+package org.sopt.and4ever.presentation.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import org.sopt.and4ever.ui.theme.AND4EVERTheme
+import dagger.hilt.android.AndroidEntryPoint
+import org.sopt.and4ever.core.theme.AND4EVERTheme
+import org.sopt.and4ever.presentation.dummy.DummyRoute
+import org.sopt.and4ever.presentation.dummy.DummyScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,12 +22,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AND4EVERTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                    DummyRoute()
+
             }
         }
     }
