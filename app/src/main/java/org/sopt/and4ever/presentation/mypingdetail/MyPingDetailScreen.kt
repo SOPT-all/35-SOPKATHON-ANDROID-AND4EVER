@@ -39,11 +39,18 @@ import org.sopt.and4ever.core.theme.Head04
 import org.sopt.and4ever.core.theme.Head05
 import org.sopt.and4ever.core.theme.JPTheme
 import org.sopt.and4ever.core.util.state.noRippleClickable
+import org.sopt.and4ever.data.service.MyPingDetailService
 
 @Composable
 fun MyPingDetailScreen(
+    myPingId: Int,
+    myPingDetailService: MyPingDetailService,
     modifier: Modifier = Modifier,
-    viewModel: MyPingDetailViewModel = viewModel()
+    viewModel: MyPingDetailViewModel = viewModel(
+        factory = MyPingDetailViewModelFactory(
+            myPingDetailService
+        )
+    )
 ) {
     val isSuccess: MutableState<String> = mutableStateOf("pending")
 
@@ -182,7 +189,9 @@ fun MyPingDetailScreen(
                 disabledContentColor = Color(0xFFFF4A63)
             ),
             contentPadding = PaddingValues(vertical = 16.dp),
-            onClick = {},
+            onClick = {
+                viewModel.patchPingStatus(myPingId, pingStatus = isSuccess.value)
+            },
         ) {
             Text(
                 text = "완료하기",

@@ -33,11 +33,13 @@ import org.sopt.and4ever.presentation.myping.MyPingScreen
 import org.sopt.and4ever.presentation.mypingdetail.MyPingDetailScreen
 import org.sopt.and4ever.presentation.otherping.OtherPingScreen
 import org.sopt.and4ever.presentation.result.ResultScreen
+import org.sopt.and4ever.data.service.MyPingDetailService
 
 @Composable
 fun JPNavigation(
     myPingService: MyPingService,
     pingService: PingService,
+    myPingDetailService: MyPingDetailService,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
@@ -105,7 +107,10 @@ fun JPNavigation(
             }
 
             composable<Route.MyPingDetail> {
+                val id = it.toRoute<Route.MyPingDetail>().id
                 MyPingDetailScreen(
+                    myPingDetailService = myPingDetailService,
+                    myPingId = id,
                     modifier = Modifier.fillMaxSize()
                 )
             }
