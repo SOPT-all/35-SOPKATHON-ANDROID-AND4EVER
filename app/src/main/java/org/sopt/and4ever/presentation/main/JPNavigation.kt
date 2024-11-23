@@ -15,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -23,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import org.sopt.and4ever.core.navigation.BottomNavigationBar
 import org.sopt.and4ever.core.navigation.BottomNavigationItem
 import org.sopt.and4ever.core.navigation.Route
+import org.sopt.and4ever.data.service.MyPingService
 import org.sopt.and4ever.presentation.home.HomeScreen
 import org.sopt.and4ever.presentation.input.InputScreen
 import org.sopt.and4ever.presentation.myping.MyPingScreen
@@ -32,6 +34,7 @@ import org.sopt.and4ever.presentation.result.ResultScreen
 
 @Composable
 fun JPNavigation(
+    myPingService: MyPingService,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
@@ -52,7 +55,7 @@ fun JPNavigation(
         NavHost(
             modifier = Modifier.padding(it),
             navController = navController,
-            startDestination = Route.Home,
+            startDestination = Route.MyPing,
             enterTransition = {
                 EnterTransition.None
             }, exitTransition = {
@@ -90,7 +93,8 @@ fun JPNavigation(
 
             composable<Route.MyPing> {
                 MyPingScreen(
-                    modifier = Modifier.fillMaxSize()
+                    myPingService = myPingService,
+                    modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 41.dp)
                 )
             }
 
@@ -108,28 +112,28 @@ fun JPNavigation(
         }
     }
 
-    LaunchedEffect(key1 = selectedMainBottomTab) {  // 하단 탭 선택에 의한 라우팅 처리
-        val targetRoute = when (selectedMainBottomTab) {
-            BottomNavigationItem.HOME -> Route.Home::class.qualifiedName
-            BottomNavigationItem.MY_PING -> Route.MyPing::class.qualifiedName
-            BottomNavigationItem.OTHER_PING -> Route.OtherPing::class.qualifiedName
-        } ?: ""
-
-        navController.navigate(targetRoute) {
-            popUpTo(Route.Home) {
-                saveState = true
-                inclusive = false
-            }
-            launchSingleTop = true
-        }
-    }
-
-    LaunchedEffect(key1 = currentRoute) {   // 뒤로가기에 의한 하단 탭 변경 처리
-        selectedMainBottomTab = when (currentRoute) {
-            Route.Home::class.qualifiedName -> BottomNavigationItem.HOME
-            Route.MyPing::class.qualifiedName -> BottomNavigationItem.MY_PING
-            Route.OtherPing::class.qualifiedName -> BottomNavigationItem.OTHER_PING
-            else -> selectedMainBottomTab
-        }
-    }
+//    LaunchedEffect(key1 = selectedMainBottomTab) {  // 하단 탭 선택에 의한 라우팅 처리
+//        val targetRoute = when (selectedMainBottomTab) {
+//            BottomNavigationItem.HOME -> Route.Home::class.qualifiedName
+//            BottomNavigationItem.MY_PING -> Route.MyPing::class.qualifiedName
+//            BottomNavigationItem.OTHER_PING -> Route.OtherPing::class.qualifiedName
+//        } ?: ""
+//
+//        navController.navigate(targetRoute) {
+//            popUpTo(Route.Home) {
+//                saveState = true
+//                inclusive = false
+//            }
+//            launchSingleTop = true
+//        }
+//    }
+//
+//    LaunchedEffect(key1 = currentRoute) {   // 뒤로가기에 의한 하단 탭 변경 처리
+//        selectedMainBottomTab = when (currentRoute) {
+//            Route.Home::class.qualifiedName -> BottomNavigationItem.HOME
+//            Route.MyPing::class.qualifiedName -> BottomNavigationItem.MY_PING
+//            Route.OtherPing::class.qualifiedName -> BottomNavigationItem.OTHER_PING
+//            else -> selectedMainBottomTab
+//        }
+//    }
 }
