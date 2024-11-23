@@ -10,6 +10,7 @@ import androidx.navigation.compose.rememberNavController
 import org.sopt.and4ever.core.navigation.Route
 import org.sopt.and4ever.presentation.home.HomeScreen
 import org.sopt.and4ever.presentation.input.InputScreen
+import org.sopt.and4ever.presentation.result.ResultScreen
 
 @Composable
 fun JPNavigation(
@@ -34,7 +35,9 @@ fun JPNavigation(
         }
 
         composable<Route.Result> {
-
+            ResultScreen(
+                modifier = Modifier.fillMaxWidth()
+            )
         }
 
         composable<Route.MyPing> {
