@@ -14,17 +14,22 @@ class OtherPingViewModel(
     private val otherPingService: OtherPingService
 ): ViewModel() {
 
+    val isLoading = MutableStateFlow(true)
+
     private val _uiState = MutableStateFlow(OtherPingUiState())
     val uiState: StateFlow<OtherPingUiState> = _uiState.asStateFlow()
 
     fun getOtherPingList(){
+        isLoading.value = true
         viewModelScope.launch{
             runCatching {
                 otherPingService.getOtherPingList()
             }.onSuccess { pingList ->
+                isLoading.value = false
                 Log.d("zzzzzzzz", pingList.toString())
                 _uiState.value = _uiState.value.copy(pingList = pingList.pingList)
             }.onFailure { error ->
+                isLoading.value = false
                 Log.e("ㅋㅋ", error.toString())
             }
         }
