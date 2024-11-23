@@ -29,6 +29,7 @@ import org.sopt.and4ever.core.navigation.BottomNavigationItem
 import org.sopt.and4ever.core.navigation.Route
 import org.sopt.and4ever.data.service.MyPingDetailService
 import org.sopt.and4ever.data.service.MyPingService
+import org.sopt.and4ever.data.service.OtherPingService
 import org.sopt.and4ever.data.service.PingService
 import org.sopt.and4ever.presentation.home.HomeScreen
 import org.sopt.and4ever.presentation.input.InputScreen
@@ -40,6 +41,7 @@ import org.sopt.and4ever.presentation.result.ResultScreen
 @Composable
 fun JPNavigation(
     myPingService: MyPingService,
+    otherPingService: OtherPingService,
     pingService: PingService,
     myPingDetailService: MyPingDetailService,
     modifier: Modifier = Modifier,
@@ -122,11 +124,11 @@ fun JPNavigation(
                     )
                 }
 
-                composable<Route.OtherPing> {
-                    OtherPingScreen(
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
+            composable<Route.OtherPing> {
+                OtherPingScreen(
+                    otherPingService = otherPingService,
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     }

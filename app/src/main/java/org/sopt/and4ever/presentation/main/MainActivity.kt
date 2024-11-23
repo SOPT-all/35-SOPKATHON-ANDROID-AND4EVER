@@ -18,6 +18,7 @@ import org.sopt.and4ever.BuildConfig
 import org.sopt.and4ever.core.theme.JPTheme
 import org.sopt.and4ever.data.service.MyPingDetailService
 import org.sopt.and4ever.data.service.MyPingService
+import org.sopt.and4ever.data.service.OtherPingService
 import org.sopt.and4ever.data.service.PingService
 import retrofit2.Retrofit
 
@@ -53,6 +54,7 @@ class MainActivity : ComponentActivity() {
     inline fun <reified T> create(): T = retrofit.create(T::class.java)
 
     val myPingService = create<MyPingService>()
+    val otherPingService = create<OtherPingService>()
     val pingService = create<PingService>()
     val myPingDetailService = create<MyPingDetailService>()
 
@@ -65,6 +67,7 @@ class MainActivity : ComponentActivity() {
                     myPingService = myPingService,
                     myPingDetailService = myPingDetailService,
                     pingService = pingService,
+                    otherPingService = otherPingService,
                     modifier = Modifier.fillMaxSize()
                 )
             }
