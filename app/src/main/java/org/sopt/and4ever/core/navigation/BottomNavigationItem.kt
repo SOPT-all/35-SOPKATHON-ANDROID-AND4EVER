@@ -8,7 +8,7 @@ enum class BottomNavigationItem(
     @StringRes val titleRes: Int,
     @DrawableRes val iconRes: Int,
 ) {
-    HOME(R.string.app_name , R.drawable.ic_launcher_background),
-    MY_PING(R.string.app_name , R.drawable.ic_launcher_background),
-    OTHER_PING(R.string.app_name , R.drawable.ic_launcher_background)
+    HOME(R.string.app_name , R.drawable.ic_home),
+    MY_PING(R.string.app_name , R.drawable.ic_list),
+    OTHER_PING(R.string.app_name , R.drawable.ic_fire)
 }
