@@ -13,6 +13,9 @@
 2) 핑계 선택 및 정리: 사용자에게 제안된 핑계를 선택하거나, 생성된 핑계를 수정,편집하여 리스트 생성 가능
 3) 타유저 핑계 열람: 다른 사용자가 생성한 핑계들을 모아 ‘오늘의 핑계’리스트 제공
 ```
+### 시연 영상
+https://github.com/user-attachments/assets/eb7f1c03-0e1f-4ab9-a294-19f5d2fe4e25
+
 
 ## CONTRIBUTORS
 |                                  👑박효빈<br/>([@Hyobeen-Park](https://github.com/Hyobeen-Park))                                      |                                      김재민<br/>([@kamja0510](https://github.com/kamja0510))                                       |                                  이상일<br/>([@ThirFir](https://github.com/ThirFir))                                   |                                    한민재<br/>([@angryPodo](https://github.com/angryPodo))                                     |
@@ -65,4 +68,5 @@
 
 <br/>
 <img width="200px" src="https://github.com/user-attachments/assets/b53cd196-ada1-46e4-8840-de8e305a4fb6"/>
+<img width="200px" src="https://github.com/user-attachments/assets/89630033-c6e1-4901-8fdd-a6cc70e375d2"/>
 
