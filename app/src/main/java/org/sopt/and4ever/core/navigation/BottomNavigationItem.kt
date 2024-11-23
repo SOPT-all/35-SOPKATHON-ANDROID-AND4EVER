@@ -5,10 +5,9 @@ import androidx.annotation.StringRes
 import org.sopt.and4ever.R
 
 enum class BottomNavigationItem(
-    @StringRes val titleRes: Int,
     @DrawableRes val iconRes: Int,
 ) {
-    HOME(R.string.app_name , R.drawable.ic_home),
-    MY_PING(R.string.app_name , R.drawable.ic_list),
-    OTHER_PING(R.string.app_name , R.drawable.ic_fire)
+    OTHER_PING(R.drawable.ic_fire),
+    HOME(R.drawable.ic_home),
+    MY_PING(R.drawable.ic_list)
 }

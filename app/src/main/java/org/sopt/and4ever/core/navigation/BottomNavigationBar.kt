@@ -42,11 +42,6 @@ fun BottomNavigationBar(
                     painter = painterResource(it.iconRes),
                     contentDescription = null
                 )
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(
-                    text = stringResource(it.titleRes),
-                    color = if (selectedItem == it) selectedItemColor else unselectedItemColor
-                )
             }
         }
     }
