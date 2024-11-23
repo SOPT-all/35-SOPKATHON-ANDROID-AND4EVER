@@ -26,10 +26,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and4ever.R
 import org.sopt.and4ever.core.theme.Body03
@@ -54,12 +57,27 @@ fun MyPingDetailScreen(
         factory = MyPingDetailViewModelFactory(
             myPingDetailService
         )
-    )
+    ),
+    navigateToMyPing: () -> Unit,
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
     val myPingState by viewModel.myPingState.collectAsStateWithLifecycle()
 
     LaunchedEffect(true) {
         viewModel.getPingDetail(myPingId)
+    }
+
+    LaunchedEffect(viewModel.myPingDetailSideEffect, lifecycleOwner) {
+        viewModel.myPingDetailSideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is MyPingDetailSideEffect.ShowToast -> {
+                        navigateToMyPing()
+                    }
+                }
+            }
     }
 
     when (myPingState.pingDetail) {
