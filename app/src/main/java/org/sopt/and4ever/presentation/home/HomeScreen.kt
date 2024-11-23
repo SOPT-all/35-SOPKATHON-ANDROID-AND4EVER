@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -73,7 +72,7 @@ fun HomeScreen(
                     text = "핑계만들기",
                     style = Head04,
                     color = Color(0xFFFF4A63)
-,                )
+                )
             }
         )
     }
