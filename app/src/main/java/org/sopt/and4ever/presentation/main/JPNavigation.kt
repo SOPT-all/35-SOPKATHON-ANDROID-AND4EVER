@@ -14,6 +14,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import org.sopt.and4ever.core.navigation.BottomNavigationBar
 import org.sopt.and4ever.core.navigation.BottomNavigationItem
 import org.sopt.and4ever.core.navigation.Route
+import org.sopt.and4ever.data.service.MyPingService
 import org.sopt.and4ever.presentation.home.HomeScreen
 import org.sopt.and4ever.presentation.input.InputScreen
 import org.sopt.and4ever.presentation.myping.MyPingScreen
@@ -31,6 +33,7 @@ import org.sopt.and4ever.presentation.result.ResultScreen
 
 @Composable
 fun JPNavigation(
+    myPingService: MyPingService,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
@@ -51,7 +54,7 @@ fun JPNavigation(
         NavHost(
             modifier = Modifier.padding(it),
             navController = navController,
-            startDestination = Route.Home,
+            startDestination = Route.MyPing,
             enterTransition = {
                 EnterTransition.None
             }, exitTransition = {
@@ -89,7 +92,8 @@ fun JPNavigation(
 
             composable<Route.MyPing> {
                 MyPingScreen(
-                    modifier = Modifier.fillMaxSize()
+                    myPingService = myPingService,
+                    modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 41.dp)
                 )
             }
 

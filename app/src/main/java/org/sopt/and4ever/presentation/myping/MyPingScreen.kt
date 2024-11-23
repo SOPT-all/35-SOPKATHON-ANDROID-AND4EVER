@@ -5,12 +5,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.sharp.KeyboardArrowRight
@@ -19,14 +19,15 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and4ever.R
 import org.sopt.and4ever.core.theme.Body01
@@ -39,12 +40,18 @@ import org.sopt.and4ever.core.theme.G09
 import org.sopt.and4ever.core.theme.Head01
 import org.sopt.and4ever.core.theme.Head06
 import org.sopt.and4ever.core.theme.White
+import org.sopt.and4ever.data.service.MyPingService
+import org.sopt.and4ever.domain.model.MyPing
 
 @Composable
 fun MyPingScreen(
+    myPingService: MyPingService,
     modifier: Modifier = Modifier,
-    viewModel: MyPingViewModel = viewModel()
+    viewModel: MyPingViewModel = viewModel(factory = MyPingViewModelFactory(myPingService))
 ) {
+
+    val myPingList by viewModel.myPings.collectAsStateWithLifecycle()
+
     Column(
         modifier = modifier,
     ) {
@@ -73,11 +80,16 @@ fun MyPingScreen(
         }
 
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().padding(top = 35.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 35.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(5) {
-                MyPingItem(modifier = Modifier.fillMaxWidth())
+            items(myPingList) { myPing ->
+                MyPingItem(
+                    myPing = myPing,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
         }
     }
@@ -86,6 +98,7 @@ fun MyPingScreen(
 
 @Composable
 private fun MyPingItem(
+    myPing: MyPing,
     modifier: Modifier = Modifier
 ) {
 
@@ -122,7 +135,8 @@ private fun MyPingItem(
                         )
                         .background(
                             color = Color(0xffFF4A63)
-                        ), text = "성공"
+                        ),
+                    text = if (myPing.pingStatus == "success") "성공" else "실패"
                 )
             }
 
@@ -132,10 +146,7 @@ private fun MyPingItem(
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = "ai가 생성한 핑계 텍스트 ai가 생성한" +
-                            " 핑계 텍스트 ai가 생성한 핑계 텍스트 ai가" +
-                            " 생성한 핑계 텍스트 ai가 생성한 핑계 텍스트" +
-                            " ai가 생성한 핑계 텍스트 ai가 생성한 핑계 텍스트 ",
+                    text = myPing.ping,
                     style = Body04,
                     color = G09,
                     maxLines = 2,
@@ -169,12 +180,4 @@ private fun MyPingItemChip(
             color = White
         )
     }
-}
-
-@Composable
-@Preview
-private fun MyPingItemPreview() {
-    MyPingItem(
-        modifier = Modifier.fillMaxWidth()
-    )
 }
