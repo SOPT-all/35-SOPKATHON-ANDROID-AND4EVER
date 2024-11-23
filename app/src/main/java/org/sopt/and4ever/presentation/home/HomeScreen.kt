@@ -29,6 +29,7 @@ fun HomeScreen(
     onNavigateToInputScreen: () -> Unit = {},
 ) {
     Column(
+        modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(

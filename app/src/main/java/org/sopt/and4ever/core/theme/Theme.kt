@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 object JPTheme {
@@ -52,6 +53,14 @@ fun JPTheme(content: @Composable () -> Unit) {
                 }
             }
         }
-        MaterialTheme(content = content)
+        MaterialTheme(
+            content = content,
+            colorScheme = MaterialTheme.colorScheme.copy(
+                primary = Color.White,
+                secondary = Color.White,
+                surface = Color.White,
+
+            )
+        )
     }
 }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -15,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -25,6 +27,7 @@ import androidx.navigation.toRoute
 import org.sopt.and4ever.core.navigation.BottomNavigationBar
 import org.sopt.and4ever.core.navigation.BottomNavigationItem
 import org.sopt.and4ever.core.navigation.Route
+import org.sopt.and4ever.data.service.MyPingDetailService
 import org.sopt.and4ever.data.service.MyPingService
 import org.sopt.and4ever.data.service.PingService
 import org.sopt.and4ever.presentation.home.HomeScreen
@@ -33,7 +36,6 @@ import org.sopt.and4ever.presentation.myping.MyPingScreen
 import org.sopt.and4ever.presentation.mypingdetail.MyPingDetailScreen
 import org.sopt.and4ever.presentation.otherping.OtherPingScreen
 import org.sopt.and4ever.presentation.result.ResultScreen
-import org.sopt.and4ever.data.service.MyPingDetailService
 
 @Composable
 fun JPNavigation(
@@ -57,68 +59,74 @@ fun JPNavigation(
             )
         }
     ) {
-        NavHost(
-            modifier = Modifier.padding(it),
-            navController = navController,
-            startDestination = Route.Home,
-            enterTransition = {
-                EnterTransition.None
-            }, exitTransition = {
-                ExitTransition.None
-            }
+        Surface(
+            color = Color.White
         ) {
-            composable<Route.Home> {
-                HomeScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    onNavigateToInputScreen = {
-                        navController.navigate(Route.Input)
-                    },
-                )
-            }
+            NavHost(
+                modifier = Modifier.padding(it),
+                navController = navController,
+                startDestination = Route.Home,
+                enterTransition = {
+                    EnterTransition.None
+                }, exitTransition = {
+                    ExitTransition.None
+                }
+            ) {
+                composable<Route.Home> {
+                    HomeScreen(
+                        modifier = Modifier.fillMaxSize(),
+                        onNavigateToInputScreen = {
+                            navController.navigate(Route.Input)
+                        },
+                    )
+                }
 
-            composable<Route.Input> {
-                InputScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    onNavigateWithInput = { situation ->
-                        navController.navigate(Route.Result(situation))
-                    }
-                )
-            }
+                composable<Route.Input> {
+                    InputScreen(
+                        modifier = Modifier.fillMaxSize(),
+                        onNavigateWithInput = { situation ->
+                            navController.navigate(Route.Result(situation))
+                        }
+                    )
+                }
 
-            composable<Route.Result> {
-                ResultScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    onNavigateToMyPingScreen = {
-                        navController.navigate(Route.MyPing)
-                    },
-                    pingService = pingService,
-                    situation = it.toRoute<Route.Result>().situation
-                )
-            }
+                composable<Route.Result> {
+                    ResultScreen(
+                        modifier = Modifier.fillMaxSize(),
+                        onNavigateToMyPingScreen = {
+                            navController.navigate(Route.MyPing)
+                        },
+                        pingService = pingService,
+                        situation = it.toRoute<Route.Result>().situation
+                    )
+                }
 
-            composable<Route.MyPing> {
-                MyPingScreen(
-                    myPingService = myPingService,
-                    onNavigateToMyPingDetail = {
-                        navController.navigate(Route.MyPingDetail(it))
-                    },
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 41.dp)
-                )
-            }
+                composable<Route.MyPing> {
+                    MyPingScreen(
+                        myPingService = myPingService,
+                        onNavigateToMyPingDetail = {
+                            navController.navigate(Route.MyPingDetail(it))
+                        },
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 20.dp, vertical = 41.dp)
+                    )
+                }
 
-            composable<Route.MyPingDetail> {
-                val id = it.toRoute<Route.MyPingDetail>().id
-                MyPingDetailScreen(
-                    myPingDetailService = myPingDetailService,
-                    myPingId = id,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
+                composable<Route.MyPingDetail> {
+                    val id = it.toRoute<Route.MyPingDetail>().id
+                    MyPingDetailScreen(
+                        myPingDetailService = myPingDetailService,
+                        myPingId = id,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
 
-            composable<Route.OtherPing> {
-                OtherPingScreen(
-                    modifier = Modifier.fillMaxSize()
-                )
+                composable<Route.OtherPing> {
+                    OtherPingScreen(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
         }
     }
