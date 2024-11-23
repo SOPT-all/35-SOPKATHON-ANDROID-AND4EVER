@@ -8,6 +8,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
@@ -48,10 +49,17 @@ fun AND4EVERTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+    CompositionLocalProvider(LocalJPTypography provides Typography) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = androidx.compose.material3.Typography(),
+            content = content
+        )
+    }
+}
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content
-    )
+object JPTheme {
+    val typography: JPTypography
+        @Composable
+        get() = LocalJPTypography.current
 }
