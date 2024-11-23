@@ -14,9 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import org.sopt.and4ever.R
 import org.sopt.and4ever.core.theme.Body04
 
@@ -32,26 +32,35 @@ fun WhiteTextBox(
         Image(
             painter = painterResource(id = R.drawable.img_white_speech_bubble),
             contentDescription = "흰색 말풍선 배경",
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-        )
-        Text(
-            modifier = Modifier
-                .padding(horizontal = 34.dp, vertical = 16.dp),
-            text = input,
-            style = Body04,
-            color = Color(0xFF171717)
-        )
-        IconButton(
-            onClick = onCopyClick,
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .size(24.dp)
+                .padding(horizontal = 34.dp, vertical = 16.dp)
         ) {
-            Image(
-                imageVector = ImageVector.vectorResource(id = R.drawable.ic_copy), // 임시 아이콘
-                contentDescription = "텍스트 복사하기"
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(end = 28.dp),
+                textAlign = TextAlign.Center,// 복사 버튼을 위한 공간 확보
+                text = input,
+                style = Body04,
+                color = Color(0xFF171717)
             )
+
+            IconButton(
+                onClick = onCopyClick,
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .size(24.dp)
+            ) {
+                Image(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.ic_copy),
+                    contentDescription = "텍스트 복사하기"
+                )
+            }
         }
     }
 }
