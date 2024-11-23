@@ -21,6 +21,7 @@ fun JPNavigation(
 ) {
 
     NavHost(
+        modifier = modifier,
         navController = navController,
         startDestination = Route.Home
     ) {
