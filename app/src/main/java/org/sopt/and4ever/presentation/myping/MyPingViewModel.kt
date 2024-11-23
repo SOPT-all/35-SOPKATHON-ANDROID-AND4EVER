@@ -24,16 +24,9 @@ class MyPingViewModel(
 
     val myPings = pingFilter.flatMapLatest {
         flow {
+            kotlinx.coroutines.delay(200)
             emit(myPingService.fetchMyPingList(it.name.lowercase()))
-//            emit(MyPingList(
-//                listOf(
-//                    MyPing(1, "ping1", "2021-10-01T01:01:01", "success"),
-//                    MyPing(2, "ping2", "2021-10-02T01:01:01", "fail"),
-//                    MyPing(3, "ping3", "2021-10-03T01:01:01", "success"),
-//                    MyPing(4, "ping4", "2021-10-04T01:01:01", "success"),
-//                    MyPing(5, "ping5", "2021-10-05T01:01:01", "pending"),
-//                )
-//            ))
+
         }
     }.catch {
         println("error: $it")
