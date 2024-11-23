@@ -1,6 +1,5 @@
 package org.sopt.and4ever.presentation.mypingdetail
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -12,7 +11,6 @@ import org.sopt.and4ever.core.util.state.UiState
 import org.sopt.and4ever.data.model.request.PatchPingRequest
 import org.sopt.and4ever.data.model.response.GetPingDetail
 import org.sopt.and4ever.data.service.MyPingDetailService
-import org.sopt.and4ever.presentation.myping.MyPingViewModel
 
 class MyPingDetailViewModel(
     private val myPingDetailService: MyPingDetailService,
@@ -29,14 +27,18 @@ class MyPingDetailViewModel(
     ) {
         viewModelScope.launch {
             runCatching {
-                Log.d("Test", "TEst")
-                myPingDetailService.patchPingStatus(pingId = pingId, pingStatus = PatchPingRequest(pingStatus))
+                myPingDetailService.patchPingStatus(
+                    pingId = pingId,
+                    pingStatus = PatchPingRequest(pingStatus)
+                )
             }.onSuccess {
-                Log.d("Test", "TEsdfadfat")
-                myPingDetailSideEffect.emit(MyPingDetailSideEffect.ShowToast("완벽한 핑계였군요!"))
-            }.onFailure {e ->
-                Log.d("Test", e.toString())
-                myPingDetailSideEffect.emit(MyPingDetailSideEffect.ShowToast("더 좋은 핑계를 준비해드릴게요 ㅠㅠ"))
+                myPingDetailSideEffect.emit(
+                    MyPingDetailSideEffect.ShowToast(
+                        if (pingStatus == "success")
+                            "완벽한 핑계였군요!"
+                        else "더 좋은 핑계를 준비해드릴게요 ㅠㅠ"
+                    )
+                )
             }
         }
     }
@@ -78,7 +80,6 @@ class MyPingDetailViewModel(
             runCatching {
                 myPingDetailService.deletePing(pingId)
             }.onSuccess {
-                myPingDetailSideEffect.emit(MyPingDetailSideEffect.NavigateToMyPing)
                 onSuccess()
             }.onFailure {
                 myPingDetailSideEffect.emit(MyPingDetailSideEffect.ShowToast("핑계 삭제에 실패했어요!"))

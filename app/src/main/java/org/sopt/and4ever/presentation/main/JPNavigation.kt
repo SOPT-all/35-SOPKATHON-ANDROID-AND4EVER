@@ -127,7 +127,8 @@ fun JPNavigation(
                                     inclusive = true
                                 }
                             }
-                        }
+                        },
+                        navigateToMyPing = { navController.navigate(Route.MyPing) }
                     )
                 }
 
