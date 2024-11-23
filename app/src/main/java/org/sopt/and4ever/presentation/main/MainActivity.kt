@@ -16,6 +16,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.sopt.and4ever.BuildConfig
 import org.sopt.and4ever.core.theme.JPTheme
 import org.sopt.and4ever.data.service.MyPingService
+import org.sopt.and4ever.data.service.OtherPingService
 import retrofit2.Retrofit
 
 class MainActivity : ComponentActivity() {
@@ -42,6 +43,7 @@ class MainActivity : ComponentActivity() {
     inline fun <reified T> create(): T = retrofit.create(T::class.java)
 
     val myPingService = create<MyPingService>()
+    val otherPingService = create<OtherPingService>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +52,7 @@ class MainActivity : ComponentActivity() {
             JPTheme {
                 JPNavigation(
                     myPingService = myPingService,
+                    otherPingService = otherPingService,
                     modifier = Modifier.fillMaxSize()
                 )
             }

@@ -16,11 +16,16 @@ import org.sopt.and4ever.core.theme.Black
 import org.sopt.and4ever.core.theme.Body03
 import org.sopt.and4ever.core.theme.G06
 import org.sopt.and4ever.core.theme.Head06
+import org.sopt.and4ever.data.service.MyPingService
+import org.sopt.and4ever.data.service.OtherPingService
 
 @Composable
 fun OtherPingScreen(
+    otherPingService: OtherPingService,
     modifier: Modifier = Modifier,
-    viewModel: OtherPingViewModel = viewModel()
+    viewModel: OtherPingViewModel = viewModel(
+        factory = OtherPingViewModelFactory(otherPingService)
+    ),
 ) {
     Column(
         modifier = Modifier
@@ -54,10 +59,4 @@ fun OtherPingScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun OtherPingScreenPreview(){
-    OtherPingScreen()
 }
