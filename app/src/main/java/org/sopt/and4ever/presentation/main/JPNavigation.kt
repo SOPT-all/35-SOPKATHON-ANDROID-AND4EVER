@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.sopt.and4ever.core.navigation.Route
 import org.sopt.and4ever.presentation.home.HomeScreen
+import org.sopt.and4ever.presentation.input.InputScreen
 
 @Composable
 fun JPNavigation(
@@ -27,7 +28,9 @@ fun JPNavigation(
         }
 
         composable<Route.Input> {
-
+            InputScreen(
+                modifier = Modifier.fillMaxWidth()
+            )
         }
 
         composable<Route.Result> {
