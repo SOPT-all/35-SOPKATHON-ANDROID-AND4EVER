@@ -24,8 +24,8 @@ fun BottomNavigationBar(
     selectedItem: BottomNavigationItem,
     onItemSelected: (BottomNavigationItem) -> Unit,
     modifier: Modifier = Modifier,
-    selectedItemColor: Color = Color.White,
-    unselectedItemColor: Color = Color.Magenta
+    selectedItemColor: Color = Color(0xFFFF4A63),
+    unselectedItemColor: Color = Color.Unspecified
 ) {
     Row(
         modifier = modifier.fillMaxWidth()
