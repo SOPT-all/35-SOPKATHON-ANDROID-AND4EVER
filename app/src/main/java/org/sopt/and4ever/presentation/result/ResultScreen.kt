@@ -7,7 +7,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun ResultScreen(
     modifier: Modifier = Modifier,
-    viewModel: ResultViewModel = viewModel()
+    viewModel: ResultViewModel = viewModel(),
+    onNavigateToMyPingScreen: () -> Unit = {},
 ) {
 
 }

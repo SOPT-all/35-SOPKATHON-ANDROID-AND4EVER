@@ -27,19 +27,28 @@ fun JPNavigation(
     ) {
         composable<Route.Home> {
             HomeScreen(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                onNavigateToInputScreen = {
+                    navController.navigate(Route.Input)
+                },
             )
         }
 
         composable<Route.Input> {
             InputScreen(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                onNavigateToResultScreen = {
+                    navController.navigate(Route.Result)
+                }
             )
         }
 
         composable<Route.Result> {
             ResultScreen(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                onNavigateToMyPingScreen = {
+                    navController.navigate(Route.MyPing)
+                }
             )
         }
 

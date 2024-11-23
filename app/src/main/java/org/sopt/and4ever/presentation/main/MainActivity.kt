@@ -11,7 +11,6 @@ import org.sopt.and4ever.core.theme.AND4EVERTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         enableEdgeToEdge()
         setContent {
             AND4EVERTheme {

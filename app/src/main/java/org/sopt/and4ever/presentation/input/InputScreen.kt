@@ -7,7 +7,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 @Composable
 fun InputScreen(
     modifier: Modifier = Modifier,
-    viewModel: InputViewModel = viewModel()
+    viewModel: InputViewModel = viewModel(),
+    onNavigateToResultScreen: () -> Unit = {},
 ) {
 
 }
