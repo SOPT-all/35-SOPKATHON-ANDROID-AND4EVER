@@ -42,6 +42,7 @@ import org.sopt.and4ever.core.util.state.UiState
 import org.sopt.and4ever.core.util.state.noRippleClickable
 import org.sopt.and4ever.data.model.response.GetPingDetail
 import org.sopt.and4ever.data.service.MyPingDetailService
+import org.sopt.and4ever.presentation.myping.formatDateTime
 
 @Composable
 fun MyPingDetailScreen(
@@ -115,16 +116,11 @@ fun ShowMyPingDetailScreen(
             Spacer(
                 modifier = Modifier.weight(1f)
             )
+            val date = formatDateTime(myPingDetail.createdDate)
             Text(
-                text = "날짜날짜",
+                text = date,
                 style = Body03,
                 color = JPTheme.colors.g06,
-            )
-            Text(
-                text = "시간시간",
-                style = Body03,
-                color = JPTheme.colors.g06,
-                modifier = Modifier.padding(start = 7.dp),
             )
 
             Box(
