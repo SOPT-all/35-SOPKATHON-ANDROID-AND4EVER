@@ -20,6 +20,7 @@ import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,6 +57,10 @@ fun MyPingDetailScreen(
     )
 ) {
     val myPingState by viewModel.myPingState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(true) {
+        viewModel.getPingDetail(myPingId)
+    }
 
     when (myPingState.pingDetail) {
         is UiState.Success -> {
@@ -184,8 +189,8 @@ fun ShowMyPingDetailScreen(
         Row {
             checkBox(
                 isSuccess = myPingStatus,
-                type = "failed",
-                onClicked = { viewModel.updatePingStatus("failed") },
+                type = "fail",
+                onClicked = { viewModel.updatePingStatus("fail") },
                 text = "오늘은 실패 ㅜㅜ",
             )
             Spacer(modifier = Modifier.size(30.dp))

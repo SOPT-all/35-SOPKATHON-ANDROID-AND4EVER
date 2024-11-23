@@ -1,5 +1,6 @@
 package org.sopt.and4ever.presentation.mypingdetail
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.sopt.and4ever.core.util.state.UiState
+import org.sopt.and4ever.data.model.request.PatchPingRequest
 import org.sopt.and4ever.data.model.response.GetPingDetail
 import org.sopt.and4ever.data.service.MyPingDetailService
 import org.sopt.and4ever.presentation.myping.MyPingViewModel
@@ -27,10 +29,13 @@ class MyPingDetailViewModel(
     ) {
         viewModelScope.launch {
             runCatching {
-                myPingDetailService.patchPingStatus(pingId = pingId, pingStatus = pingStatus)
+                Log.d("Test", "TEst")
+                myPingDetailService.patchPingStatus(pingId = pingId, pingStatus = PatchPingRequest(pingStatus))
             }.onSuccess {
+                Log.d("Test", "TEsdfadfat")
                 myPingDetailSideEffect.emit(MyPingDetailSideEffect.ShowToast("완벽한 핑계였군요!"))
-            }.onFailure {
+            }.onFailure {e ->
+                Log.d("Test", e.toString())
                 myPingDetailSideEffect.emit(MyPingDetailSideEffect.ShowToast("더 좋은 핑계를 준비해드릴게요 ㅠㅠ"))
             }
         }
@@ -72,7 +77,7 @@ class MyPingDetailViewModel(
 class MyPingDetailViewModelFactory(private val myPingDetailService: MyPingDetailService) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(MyPingViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(MyPingDetailViewModel::class.java)) {
             return MyPingDetailViewModel(myPingDetailService) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
