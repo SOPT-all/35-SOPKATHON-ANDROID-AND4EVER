@@ -5,8 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
@@ -48,7 +50,9 @@ fun ResultScreen(
     }
 
     Box(
-        modifier = Modifier.fillMaxSize().background(Color.White),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
         contentAlignment = Alignment.Center
     ) {
         if (uiState is ResultUiState.Loading || uiState is ResultUiState.Initial) {
@@ -66,10 +70,12 @@ fun ResultScreen(
                         contentDescription = null
                     )
                     Column(
-                        modifier = Modifier.fillMaxWidth().offset(
-                            x = 0.dp,
-                            y = (-20).dp
-                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .offset(
+                                x = 0.dp,
+                                y = (-20).dp
+                            ),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
@@ -92,15 +98,17 @@ fun ResultScreen(
             Column(
                 modifier = modifier
                     .fillMaxSize()
-                    .padding(horizontal = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(24.dp)
+                    .padding(horizontal = 20.dp)
             ) {
                 InputTop(
                     step = "2",
                     topMessage = "이런 핑계는 어떠신가요?"
                 )
+                Spacer(modifier = Modifier.weight(1f))
 
                 PinkTextBox(input = situation)
+
+                Spacer(modifier = Modifier.height(12.dp))
 
                 when (val state = uiState) {
                     is ResultUiState.Success -> {
@@ -108,6 +116,7 @@ fun ResultScreen(
                             input = state.ping,
                             onCopyClick = { /* 복사 기능 구현 */ }
                         )
+                        Spacer(modifier = Modifier.weight(1f))
 
                         Column(verticalArrangement = Arrangement.spacedBy(7.dp)) {
                             SelectButton(
@@ -137,44 +146,9 @@ fun ResultScreen(
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
                     }
-
                     else -> {}
                 }
+                Spacer(modifier = Modifier.weight(1f))
             }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ResultScreenContentPreview() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
-    ) {
-        InputTop(
-            step = "2",
-            topMessage = "이런 핑계는 어떠신가요?"
-        )
-
-        PinkTextBox(input = "점심 약속에 늦었어요")
-
-        WhiteTextBox(
-            input = "버스가 안 와서 늦었어요",
-            onCopyClick = {}
-        )
-
-        Column(verticalArrangement = Arrangement.spacedBy(7.dp)) {
-            SelectButton(
-                onSelect = {},
-                isLoading = false
-            )
-
-            RefreshButton(
-                onRefresh = {}
-            )
-        }
     }
 }
