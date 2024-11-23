@@ -81,6 +81,8 @@ fun JPNavigation(
                     modifier = Modifier.fillMaxSize(),
                     onNavigateToMyPingScreen = {
                         navController.navigate(Route.MyPing)
+                    }, onNavigateToOtherPingScreen = {
+                        navController.navigate(Route.OtherPing)
                     }
                 )
             }

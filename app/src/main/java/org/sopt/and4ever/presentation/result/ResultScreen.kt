@@ -10,6 +10,7 @@ fun ResultScreen(
     modifier: Modifier = Modifier,
     viewModel: ResultViewModel = viewModel(),
     onNavigateToMyPingScreen: () -> Unit = {},
+    onNavigateToOtherPingScreen: () -> Unit = {}
 ) {
     Text("ResultScreen")
 }
