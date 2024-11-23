@@ -124,37 +124,38 @@ fun JPNavigation(
                     )
                 }
 
-            composable<Route.OtherPing> {
-                OtherPingScreen(
-                    otherPingService = otherPingService,
-                    modifier = Modifier.fillMaxSize()
-                )
+                composable<Route.OtherPing> {
+                    OtherPingScreen(
+                        otherPingService = otherPingService,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
         }
-    }
 
-    LaunchedEffect(key1 = selectedMainBottomTab) {  // 하단 탭 선택에 의한 라우팅 처리
-        val targetRoute = when (selectedMainBottomTab) {
-            BottomNavigationItem.HOME -> Route.Home::class.qualifiedName
-            BottomNavigationItem.MY_PING -> Route.MyPing::class.qualifiedName
-            BottomNavigationItem.OTHER_PING -> Route.OtherPing::class.qualifiedName
-        } ?: ""
+        LaunchedEffect(key1 = selectedMainBottomTab) {  // 하단 탭 선택에 의한 라우팅 처리
+            val targetRoute = when (selectedMainBottomTab) {
+                BottomNavigationItem.HOME -> Route.Home::class.qualifiedName
+                BottomNavigationItem.MY_PING -> Route.MyPing::class.qualifiedName
+                BottomNavigationItem.OTHER_PING -> Route.OtherPing::class.qualifiedName
+            } ?: ""
 
-        navController.navigate(targetRoute) {
-            popUpTo(Route.Home) {
-                saveState = true
-                inclusive = false
+            navController.navigate(targetRoute) {
+                popUpTo(Route.Home) {
+                    saveState = true
+                    inclusive = false
+                }
+                launchSingleTop = true
             }
-            launchSingleTop = true
         }
-    }
 
-    LaunchedEffect(key1 = currentRoute) {   // 뒤로가기에 의한 하단 탭 변경 처리
-        selectedMainBottomTab = when (currentRoute) {
-            Route.Home::class.qualifiedName -> BottomNavigationItem.HOME
-            Route.MyPing::class.qualifiedName -> BottomNavigationItem.MY_PING
-            Route.OtherPing::class.qualifiedName -> BottomNavigationItem.OTHER_PING
-            else -> selectedMainBottomTab
+        LaunchedEffect(key1 = currentRoute) {   // 뒤로가기에 의한 하단 탭 변경 처리
+            selectedMainBottomTab = when (currentRoute) {
+                Route.Home::class.qualifiedName -> BottomNavigationItem.HOME
+                Route.MyPing::class.qualifiedName -> BottomNavigationItem.MY_PING
+                Route.OtherPing::class.qualifiedName -> BottomNavigationItem.OTHER_PING
+                else -> selectedMainBottomTab
+            }
         }
     }
 }
