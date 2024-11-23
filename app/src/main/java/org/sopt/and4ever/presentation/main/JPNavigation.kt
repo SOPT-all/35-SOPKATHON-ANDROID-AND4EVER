@@ -5,6 +5,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,7 +40,7 @@ fun JPNavigation(
     val currentRoute by remember { derivedStateOf { navBackStackEntry?.destination?.route } }
 
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.systemBarsPadding(),
         bottomBar = {
             BottomNavigationBar(
                 selectedItem = selectedMainBottomTab,
@@ -51,7 +52,7 @@ fun JPNavigation(
         NavHost(
             modifier = Modifier.padding(it),
             navController = navController,
-            startDestination = Route.Home,
+            startDestination = Route.OtherPing,
             enterTransition = {
                 EnterTransition.None
             }, exitTransition = {
@@ -107,28 +108,28 @@ fun JPNavigation(
         }
     }
 
-    LaunchedEffect(key1 = selectedMainBottomTab) {  // 하단 탭 선택에 의한 라우팅 처리
-        val targetRoute = when (selectedMainBottomTab) {
-            BottomNavigationItem.HOME -> Route.Home::class.qualifiedName
-            BottomNavigationItem.MY_PING -> Route.MyPing::class.qualifiedName
-            BottomNavigationItem.OTHER_PING -> Route.OtherPing::class.qualifiedName
-        } ?: ""
-
-        navController.navigate(targetRoute) {
-            popUpTo(Route.Home) {
-                saveState = true
-                inclusive = false
-            }
-            launchSingleTop = true
-        }
-    }
-
-    LaunchedEffect(key1 = currentRoute) {   // 뒤로가기에 의한 하단 탭 변경 처리
-        selectedMainBottomTab = when (currentRoute) {
-            Route.Home::class.qualifiedName -> BottomNavigationItem.HOME
-            Route.MyPing::class.qualifiedName -> BottomNavigationItem.MY_PING
-            Route.OtherPing::class.qualifiedName -> BottomNavigationItem.OTHER_PING
-            else -> selectedMainBottomTab
-        }
-    }
+//    LaunchedEffect(key1 = selectedMainBottomTab) {  // 하단 탭 선택에 의한 라우팅 처리
+//        val targetRoute = when (selectedMainBottomTab) {
+//            BottomNavigationItem.HOME -> Route.Home::class.qualifiedName
+//            BottomNavigationItem.MY_PING -> Route.MyPing::class.qualifiedName
+//            BottomNavigationItem.OTHER_PING -> Route.OtherPing::class.qualifiedName
+//        } ?: ""
+//
+//        navController.navigate(targetRoute) {
+//            popUpTo(Route.Home) {
+//                saveState = true
+//                inclusive = false
+//            }
+//            launchSingleTop = true
+//        }
+//    }
+//
+//    LaunchedEffect(key1 = currentRoute) {   // 뒤로가기에 의한 하단 탭 변경 처리
+//        selectedMainBottomTab = when (currentRoute) {
+//            Route.Home::class.qualifiedName -> BottomNavigationItem.HOME
+//            Route.MyPing::class.qualifiedName -> BottomNavigationItem.MY_PING
+//            Route.OtherPing::class.qualifiedName -> BottomNavigationItem.OTHER_PING
+//            else -> selectedMainBottomTab
+//        }
+//    }
 }
