@@ -4,13 +4,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.sopt.and4ever.core.util.state.UiState
+import org.sopt.and4ever.data.model.response.GetPingDetail
 import org.sopt.and4ever.data.service.MyPingDetailService
 import org.sopt.and4ever.presentation.myping.MyPingViewModel
 
 class MyPingDetailViewModel(
     private val myPingDetailService: MyPingDetailService,
 ) : ViewModel() {
+    var myPingState = MutableStateFlow(MyPingState())
+        private set
+
     var myPingDetailSideEffect = MutableSharedFlow<MyPingDetailSideEffect>()
         private set
 
@@ -26,6 +33,38 @@ class MyPingDetailViewModel(
             }.onFailure {
                 myPingDetailSideEffect.emit(MyPingDetailSideEffect.ShowToast("더 좋은 핑계를 준비해드릴게요 ㅠㅠ"))
             }
+        }
+    }
+
+    fun getPingDetail(
+        pingId: Int,
+    ) {
+        viewModelScope.launch {
+            runCatching {
+                with(myPingDetailService.getPingDetail(pingId)) {
+                    myPingState.update {
+                        it.copy(
+                            pingDetail = UiState.Success(
+                                GetPingDetail(
+                                    situation = situation,
+                                    ping = ping,
+                                    pingStatus = pingStatus,
+                                    createdDate = createdDate,
+                                )
+                            )
+                        )
+                    }
+                    updatePingStatus(pingStatus)
+                }
+            }
+        }
+    }
+
+    fun updatePingStatus(pingStatus: String) {
+        myPingState.update {
+            it.copy(
+                pingStatus = pingStatus
+            )
         }
     }
 }

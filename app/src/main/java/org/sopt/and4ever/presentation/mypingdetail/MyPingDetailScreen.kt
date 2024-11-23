@@ -20,8 +20,7 @@ import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.sopt.and4ever.R
 import org.sopt.and4ever.core.theme.Body03
@@ -38,7 +38,9 @@ import org.sopt.and4ever.core.theme.Head03
 import org.sopt.and4ever.core.theme.Head04
 import org.sopt.and4ever.core.theme.Head05
 import org.sopt.and4ever.core.theme.JPTheme
+import org.sopt.and4ever.core.util.state.UiState
 import org.sopt.and4ever.core.util.state.noRippleClickable
+import org.sopt.and4ever.data.model.response.GetPingDetail
 import org.sopt.and4ever.data.service.MyPingDetailService
 
 @Composable
@@ -52,8 +54,31 @@ fun MyPingDetailScreen(
         )
     )
 ) {
-    val isSuccess: MutableState<String> = mutableStateOf("pending")
+    val myPingState by viewModel.myPingState.collectAsStateWithLifecycle()
 
+    when (myPingState.pingDetail) {
+        is UiState.Success -> {
+            ShowMyPingDetailScreen(
+                myPingId = myPingId,
+                myPingDetail = (myPingState.pingDetail as UiState.Success<GetPingDetail>).data,
+                myPingState.pingStatus,
+                modifier,
+                viewModel,
+            )
+        }
+
+        else -> {}
+    }
+}
+
+@Composable
+fun ShowMyPingDetailScreen(
+    myPingId: Int,
+    myPingDetail: GetPingDetail,
+    myPingStatus: String,
+    modifier: Modifier,
+    viewModel: MyPingDetailViewModel,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
@@ -130,7 +155,7 @@ fun MyPingDetailScreen(
                 contentDescription = null,
             )
             Text(
-                text = "ajfdlajdsflajflkjallasdjkfjaldadfadfdaslkjfkldajfjaskdfjlajkdfajdfkjlajdfkjafdfafdadfafdafdafjfklajdlfkj",
+                text = myPingDetail.situation,
                 style = Body04,
                 color = JPTheme.colors.g09,
                 modifier = Modifier
@@ -149,7 +174,7 @@ fun MyPingDetailScreen(
                 contentDescription = null
             )
             Text(
-                text = "ㅇ러ㅏ머널이머ㅣ라ㅓㅏㅁ너이리ㅏ멀이ㅓ마ㅣㄹ어ㅣㄹ미어라머아러만얼 아ㅣㅓㄴ ㅣㅓㅇ니 ㅓㅁㄴ이ㅓㄻㅇㄹ ㅁㄴㅇㄹㄴㅁㅇㄹㄴㅇ afd adㅇ러ㅏ머널이머ㅣ라ㅓㅏㅁ너이리ㅏ멀이ㅓ마ㅣㄹ어ㅣㄹ미어라머아러만얼 아ㅣㅓㄴ ㅣㅓㅇ니 ㅓㅁㄴ이ㅓㄻㅇㄹ ㅁㄴㅇㄹㄴㅁㅇㄹㄴㅇ afd ad ㅓㅁㄴ이ㅓㄻㅇㄹ ㅁㄴㅇㄹㄴㅁㅇㄹㄴㅇ afd ad ㅓㅁㄴ이ㅓㄻㅇㄹ ㅁㄴㅇㄹㄴㅁㅇㄹㄴㅇㅁㅇㄻㅇㄹㅁㅇㄻㄹㅇㄹㅇㄹ",
+                text = myPingDetail.ping,
                 style = Body04,
                 color = JPTheme.colors.g09,
                 modifier = Modifier
@@ -162,16 +187,16 @@ fun MyPingDetailScreen(
 
         Row {
             checkBox(
-                isSuccess = isSuccess,
+                isSuccess = myPingStatus,
                 type = "failed",
-                onClicked = { isSuccess.value = "failed" },
+                onClicked = { viewModel.updatePingStatus("failed") },
                 text = "오늘은 실패 ㅜㅜ",
             )
             Spacer(modifier = Modifier.size(30.dp))
             checkBox(
-                isSuccess = isSuccess,
+                isSuccess = myPingStatus,
                 type = "success",
-                onClicked = { isSuccess.value = "success" },
+                onClicked = { viewModel.updatePingStatus("success") },
                 text = "내가 해냈음!",
             )
         }
@@ -190,7 +215,7 @@ fun MyPingDetailScreen(
             ),
             contentPadding = PaddingValues(vertical = 16.dp),
             onClick = {
-                viewModel.patchPingStatus(myPingId, pingStatus = isSuccess.value)
+                viewModel.patchPingStatus(myPingId, pingStatus = myPingStatus)
             },
         ) {
             Text(
@@ -205,7 +230,7 @@ fun MyPingDetailScreen(
 
 @Composable
 fun checkBox(
-    isSuccess: MutableState<String>,
+    isSuccess: String,
     type: String,
     onClicked: () -> Unit,
     text: String,
@@ -214,7 +239,7 @@ fun checkBox(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Checkbox(
-            checked = isSuccess.value == type,
+            checked = isSuccess == type,
             onCheckedChange = { onClicked() },
             modifier = Modifier
                 .size(24.dp),
