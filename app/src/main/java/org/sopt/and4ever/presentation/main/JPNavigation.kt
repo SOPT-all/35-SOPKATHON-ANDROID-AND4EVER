@@ -120,7 +120,8 @@ fun JPNavigation(
                     MyPingDetailScreen(
                         myPingDetailService = myPingDetailService,
                         myPingId = id,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        navigateToMyPing = { navController.navigate(Route.MyPing) }
                     )
                 }
 
