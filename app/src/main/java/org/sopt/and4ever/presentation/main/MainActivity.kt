@@ -17,6 +17,7 @@ import org.sopt.and4ever.BuildConfig
 import org.sopt.and4ever.core.theme.JPTheme
 import org.sopt.and4ever.data.service.MyPingService
 import org.sopt.and4ever.data.service.OtherPingService
+import org.sopt.and4ever.data.service.PingService
 import retrofit2.Retrofit
 
 class MainActivity : ComponentActivity() {
@@ -44,6 +45,7 @@ class MainActivity : ComponentActivity() {
 
     val myPingService = create<MyPingService>()
     val otherPingService = create<OtherPingService>()
+    val pingService = create<PingService>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +54,7 @@ class MainActivity : ComponentActivity() {
             JPTheme {
                 JPNavigation(
                     myPingService = myPingService,
+                    pingService = pingService,
                     otherPingService = otherPingService,
                     modifier = Modifier.fillMaxSize()
                 )
