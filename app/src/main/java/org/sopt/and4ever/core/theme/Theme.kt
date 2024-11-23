@@ -56,9 +56,6 @@ fun JPTheme(content: @Composable () -> Unit) {
         MaterialTheme(
             content = content,
             colorScheme = MaterialTheme.colorScheme.copy(
-                primary = Color.White,
-                secondary = Color.White,
-                surface = Color.White,
 
             )
         )

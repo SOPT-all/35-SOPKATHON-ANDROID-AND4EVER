@@ -23,6 +23,7 @@ import androidx.compose.material.icons.automirrored.sharp.KeyboardArrowRight
 import androidx.compose.material.icons.sharp.KeyboardArrowDown
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -75,6 +76,8 @@ fun MyPingScreen(
     onNavigateToMyPingDetail: (Int) -> Unit = {},
 ) {
 
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+
     val myPingList by viewModel.myPings.collectAsStateWithLifecycle()
     val filterDropDownType by viewModel.pingFilter.collectAsStateWithLifecycle()
 
@@ -100,98 +103,110 @@ fun MyPingScreen(
             )
             Spacer(modifier = Modifier.weight(1f))
 
-            if(isEmpty.not()) {
-            Row(
-                modifier = Modifier
-                    .width(100.dp)
-                    .height(IntrinsicSize.Min)
-                    .border(
-                        width = 1.dp,
-                        shape = RoundedCornerShape(4.dp),
-                        color = G06
-                    )
-                    .padding(vertical = 6.dp)
-                    .noRippleClickable {
-                        isDropDownExpanded = !isDropDownExpanded
-                    }, verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                    text = filterDropDownType.title,
-                    style = Head01,
-                    color = G09
-                )
-                Icon(
-                    modifier = Modifier.padding(start = 14.dp),
-                    imageVector = Icons.Sharp.KeyboardArrowDown,
-                    contentDescription = null,
-                    tint = G06
-                )
-                Column(
+
+            if (isEmpty.not()) {
+                Row(
                     modifier = Modifier
-                        .fillMaxSize()
+                        .width(100.dp)
+                        .height(IntrinsicSize.Min)
+                        .border(
+                            width = 1.dp,
+                            shape = RoundedCornerShape(4.dp),
+                            color = G06
+                        )
+                        .padding(vertical = 6.dp)
                         .noRippleClickable {
                             isDropDownExpanded = !isDropDownExpanded
-                        }
+                        }, verticalAlignment = Alignment.CenterVertically
                 ) {
-
-                    MaterialTheme(
-                        colorScheme = MaterialTheme.colorScheme.copy(surface = Color.White),
+                    Text(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        text = filterDropDownType.title,
+                        style = Head01,
+                        color = G09
+                    )
+                    Icon(
+                        modifier = Modifier.padding(start = 14.dp),
+                        imageVector = Icons.Sharp.KeyboardArrowDown,
+                        contentDescription = null,
+                        tint = G06
+                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .noRippleClickable {
+                                isDropDownExpanded = !isDropDownExpanded
+                            }
                     ) {
-                        DropdownMenu(
-                            modifier = Modifier
-                                .border(
-                                    width = 1.dp,
-                                    color = G06
-                                )
-                                .background(Color.White),
-                            expanded = isDropDownExpanded,
-                            onDismissRequest = { isDropDownExpanded = false }
-                        ) {
-                            FilterDropDownType.entries.fastForEach {
-                                if (it != filterDropDownType) {
-                                    DropdownMenuItem(
-                                        modifier = Modifier.width(100.dp),
-                                        onClick = {
-                                            viewModel.setPingFilter(it)
-                                            isDropDownExpanded = false
-                                        }, text = {
-                                            Text(
-                                                modifier = Modifier.fillMaxWidth(),
-                                                text = it.title,
-                                                style = Head01,
-                                                textAlign = TextAlign.Start
-                                            )
-                                        }
-                                    )
-                                }
 
+                        MaterialTheme(
+                            colorScheme = MaterialTheme.colorScheme.copy(surface = Color.White),
+                        ) {
+                            DropdownMenu(
+                                modifier = Modifier
+                                    .border(
+                                        width = 1.dp,
+                                        color = G06
+                                    )
+                                    .background(Color.White),
+                                expanded = isDropDownExpanded,
+                                onDismissRequest = { isDropDownExpanded = false }
+                            ) {
+                                FilterDropDownType.entries.fastForEach {
+                                    if (it != filterDropDownType) {
+                                        DropdownMenuItem(
+                                            modifier = Modifier.width(100.dp),
+                                            onClick = {
+                                                viewModel.setPingFilter(it)
+                                                isDropDownExpanded = false
+                                            }, text = {
+                                                Text(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    text = it.title,
+                                                    style = Head01,
+                                                    textAlign = TextAlign.Start
+                                                )
+                                            }
+                                        )
+                                    }
+
+                                }
                             }
                         }
                     }
                 }
             }
-            }
         }
 
-        if (isEmpty.not()) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 35.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
-                items(myPingList) { myPing ->
-                    MyPingItem(
-                        myPing = myPing,
-                        modifier = Modifier.fillMaxWidth(),
-                        onNavigateToMyPingDetail = {
-                            onNavigateToMyPingDetail(it)
-                        }
-                    )
+                CircularProgressIndicator(
+                    modifier = Modifier.padding(top = 10.dp),
+                    color = G06
+                )
+            }
+        } else
+            if (isEmpty.not()) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 35.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(myPingList) { myPing ->
+                        MyPingItem(
+                            myPing = myPing,
+                            modifier = Modifier.fillMaxWidth(),
+                            onNavigateToMyPingDetail = {
+                                onNavigateToMyPingDetail(it)
+                            }
+                        )
+                    }
                 }
             }
-        }
 
         if (isEmpty) {
             Column(
@@ -250,7 +265,7 @@ private fun MyPingItem(
                             shape = RoundedCornerShape(50f)
                         )
                         .background(
-                            color = when(myPing.pingStatus) {
+                            color = when (myPing.pingStatus) {
                                 "success" -> Color(0xFFFF4A63)
                                 "fail" -> G06
                                 else -> G04
@@ -312,7 +327,8 @@ fun formatDateTime(input: String): String {
     val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
     val formattedDate = dateTime.format(formatter)
 
-    val dayOfWeek = dateTime.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.KOREAN)
+    val dayOfWeek =
+        dateTime.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, java.util.Locale.KOREAN)
     val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
     val formattedTime = dateTime.format(timeFormatter)
 
