@@ -2,46 +2,62 @@ package org.sopt.and4ever.presentation.myping
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.sharp.KeyboardArrowRight
+import androidx.compose.material.icons.sharp.KeyboardArrowDown
+import androidx.compose.material.icons.sharp.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastForEach
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import org.sopt.and4ever.R
 import org.sopt.and4ever.core.theme.Body01
 import org.sopt.and4ever.core.theme.Body03
 import org.sopt.and4ever.core.theme.Body04
 import org.sopt.and4ever.core.theme.G04
 import org.sopt.and4ever.core.theme.G06
-import org.sopt.and4ever.core.theme.G08
 import org.sopt.and4ever.core.theme.G09
 import org.sopt.and4ever.core.theme.Head01
 import org.sopt.and4ever.core.theme.Head06
 import org.sopt.and4ever.core.theme.White
+import org.sopt.and4ever.core.util.state.noRippleClickable
 import org.sopt.and4ever.data.service.MyPingService
 import org.sopt.and4ever.domain.model.MyPing
+
+enum class FilterDropDownType(
+    val title: String
+) {
+    ALL("전체"), SUCCESS("성공"), FAIL("실패"), PENDING("미정")
+}
 
 @Composable
 fun MyPingScreen(
@@ -51,6 +67,9 @@ fun MyPingScreen(
 ) {
 
     val myPingList by viewModel.myPings.collectAsStateWithLifecycle()
+    val filterDropDownType by viewModel.pingFilter.collectAsStateWithLifecycle()
+
+    var isDropDownExpanded by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier,
@@ -69,14 +88,58 @@ fun MyPingScreen(
                 color = G06
             )
             Spacer(modifier = Modifier.weight(1f))
-            Text(
-                text = "필터",
-                color = G08
-            )
-            Icon(
-                painter = painterResource(R.drawable.ic_sort),
-                contentDescription = "정렬"
-            )
+            Row(
+                modifier = Modifier.border(
+                    width = 1.dp,
+                    shape = RoundedCornerShape(4.dp),
+                    color = G06
+                )
+            ) {
+                Column(
+                    modifier = Modifier.noRippleClickable {
+                        isDropDownExpanded = !isDropDownExpanded
+                    }
+                ) {
+                    DropdownMenu(
+                        modifier = Modifier
+                            .wrapContentSize()
+                            .border(
+                                width = 1.dp,
+                                color = G06
+                            ),
+                        expanded = isDropDownExpanded,
+                        onDismissRequest = { isDropDownExpanded = false }
+                    ) {
+                        FilterDropDownType.entries.fastForEach {
+                            DropdownMenuItem(
+                                colors = MenuDefaults.itemColors(
+
+                                ),
+                                onClick = {
+                                    viewModel.setPingFilter(it)
+                                    isDropDownExpanded = false
+                                }, text = {
+                                    Text(
+                                        text = it.title,
+                                        style = Body01
+                                    )
+                                }
+                            )
+                        }
+                    }
+                }
+                Text(
+                    text = filterDropDownType.title,
+                    style = Body01,
+                    color = G06
+                )
+                Icon(
+                    modifier = Modifier.padding(start = 14.dp),
+                    imageVector = Icons.Sharp.KeyboardArrowDown,
+                    contentDescription = null,
+                    tint = G06
+                )
+            }
         }
 
         LazyColumn(
@@ -136,7 +199,11 @@ private fun MyPingItem(
                         .background(
                             color = Color(0xffFF4A63)
                         ),
-                    text = if (myPing.pingStatus == "success") "성공" else "실패"
+                    text = when (myPing.pingStatus) {
+                        "success" -> "성공"
+                        "fail" -> "실패"
+                        else -> "미정"
+                    }
                 )
             }
 

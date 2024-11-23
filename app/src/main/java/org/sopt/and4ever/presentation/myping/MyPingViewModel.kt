@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -17,7 +18,8 @@ class MyPingViewModel(
     private val myPingService: MyPingService
 ): ViewModel() {
 
-    private val pingFilter = MutableStateFlow("success")
+    private val _pingFilter = MutableStateFlow(FilterDropDownType.ALL)
+    val pingFilter = _pingFilter.asStateFlow()
 
     val myPings = pingFilter.flatMapLatest {
         flow {
@@ -40,8 +42,8 @@ class MyPingViewModel(
         initialValue = listOf()
     )
 
-    fun setPingFilter(pingFilter: String) {
-        this.pingFilter.value = pingFilter
+    fun setPingFilter(pingFilter: FilterDropDownType) {
+        _pingFilter.value = pingFilter
     }
 }
 
