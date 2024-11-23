@@ -54,7 +54,7 @@ fun MyPingDetailScreen(
         factory = MyPingDetailViewModelFactory(
             myPingDetailService
         )
-    )
+    ), popUp: () -> Unit
 ) {
     val myPingState by viewModel.myPingState.collectAsStateWithLifecycle()
 
@@ -70,6 +70,7 @@ fun MyPingDetailScreen(
                 myPingState.pingStatus,
                 modifier,
                 viewModel,
+                popUp
             )
         }
 
@@ -84,6 +85,7 @@ fun ShowMyPingDetailScreen(
     myPingStatus: String,
     modifier: Modifier,
     viewModel: MyPingDetailViewModel,
+    popUp: () -> Unit = {},
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -138,8 +140,12 @@ fun ShowMyPingDetailScreen(
                     style = Body03,
                     color = JPTheme.colors.g06,
                     modifier = Modifier
-                        .padding(end = 20.dp)
-                        .noRippleClickable { }
+                        .noRippleClickable {
+                            println("ddd")
+                            viewModel.deletePing(myPingId) {
+                                popUp()
+                            }
+                        }.padding(end = 20.dp)
                 )
             }
         }

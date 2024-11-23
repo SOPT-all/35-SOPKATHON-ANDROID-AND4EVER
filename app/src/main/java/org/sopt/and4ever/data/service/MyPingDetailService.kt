@@ -3,6 +3,7 @@ package org.sopt.and4ever.data.service
 import org.sopt.and4ever.data.model.request.PatchPingRequest
 import org.sopt.and4ever.data.model.response.GetPingDetail
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
 import retrofit2.http.Path
@@ -18,4 +19,9 @@ interface MyPingDetailService {
     suspend fun getPingDetail(
         @Path("pingId") pingId: Int,
     ): GetPingDetail
+
+    @DELETE("pings/{pingId}")
+    suspend fun deletePing(
+        @Path("pingId") pingId: Int,
+    ): Unit
 }

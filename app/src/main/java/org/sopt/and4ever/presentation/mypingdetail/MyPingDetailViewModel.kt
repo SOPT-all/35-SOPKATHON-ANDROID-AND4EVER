@@ -72,6 +72,19 @@ class MyPingDetailViewModel(
             )
         }
     }
+
+    fun deletePing(pingId: Int, onSuccess: () -> Unit) {
+        viewModelScope.launch {
+            runCatching {
+                myPingDetailService.deletePing(pingId)
+            }.onSuccess {
+                myPingDetailSideEffect.emit(MyPingDetailSideEffect.NavigateToMyPing)
+                onSuccess()
+            }.onFailure {
+                myPingDetailSideEffect.emit(MyPingDetailSideEffect.ShowToast("핑계 삭제에 실패했어요!"))
+            }
+        }
+    }
 }
 
 class MyPingDetailViewModelFactory(private val myPingDetailService: MyPingDetailService) :

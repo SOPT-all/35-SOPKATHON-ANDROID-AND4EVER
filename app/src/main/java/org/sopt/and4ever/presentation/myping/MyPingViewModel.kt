@@ -22,16 +22,20 @@ class MyPingViewModel(
     private val _pingFilter = MutableStateFlow(FilterDropDownType.ALL)
     val pingFilter = _pingFilter.asStateFlow()
 
+    val isLoading = MutableStateFlow(true)
+
     val myPings = pingFilter.flatMapLatest {
+        isLoading.value = true
         flow {
             kotlinx.coroutines.delay(200)
             emit(myPingService.fetchMyPingList(it.name.lowercase()))
-
         }
     }.catch {
+        isLoading.value = false
         println("error: $it")
         emit(MyPingList(listOf()))
     }.map {
+        isLoading.value = false
         it.pingList
     }.stateIn(
         scope = viewModelScope,

@@ -2,16 +2,20 @@ package org.sopt.and4ever.presentation.otherping
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +43,8 @@ fun OtherPingScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+
     Column(
         modifier = modifier
             .padding(
@@ -61,17 +67,26 @@ fun OtherPingScreen(
             color = G06
         )
 
-        Spacer(modifier = Modifier.height(36.dp))
+        if (isLoading.not()) {
+            Spacer(modifier = Modifier.height(36.dp))
 
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            items(uiState.pingList) { myPing ->
-                val timeString = formatDateTime(myPing.createdDate)
-                OtherPingListItem(
-                    content = myPing.ping,
-                    timeString = timeString
-                )
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(uiState.pingList) { myPing ->
+                    val timeString = formatDateTime(myPing.createdDate)
+                    OtherPingListItem(
+                        content = myPing.ping,
+                        timeString = timeString
+                    )
+                }
+            }
+        } else {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
             }
         }
     }

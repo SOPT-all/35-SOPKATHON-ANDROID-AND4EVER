@@ -120,7 +120,14 @@ fun JPNavigation(
                     MyPingDetailScreen(
                         myPingDetailService = myPingDetailService,
                         myPingId = id,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
+                        popUp = {
+                            navController.navigate(Route.MyPing) {
+                                popUpTo(Route.MyPing) {
+                                    inclusive = true
+                                }
+                            }
+                        }
                     )
                 }
 
