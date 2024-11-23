@@ -21,10 +21,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import org.sopt.and4ever.core.navigation.BottomNavigationBar
 import org.sopt.and4ever.core.navigation.BottomNavigationItem
 import org.sopt.and4ever.core.navigation.Route
 import org.sopt.and4ever.data.service.MyPingService
+import org.sopt.and4ever.data.service.PingService
 import org.sopt.and4ever.presentation.home.HomeScreen
 import org.sopt.and4ever.presentation.input.InputScreen
 import org.sopt.and4ever.presentation.myping.MyPingScreen
@@ -35,6 +37,7 @@ import org.sopt.and4ever.presentation.result.ResultScreen
 @Composable
 fun JPNavigation(
     myPingService: MyPingService,
+    pingService: PingService,
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController()
 ) {
@@ -74,8 +77,8 @@ fun JPNavigation(
             composable<Route.Input> {
                 InputScreen(
                     modifier = Modifier.fillMaxSize(),
-                    onNavigateToResultScreen = {
-                        navController.navigate(Route.Result)
+                    onNavigateWithInput = { situation ->
+                        navController.navigate(Route.Result(situation))
                     }
                 )
             }
@@ -85,16 +88,18 @@ fun JPNavigation(
                     modifier = Modifier.fillMaxSize(),
                     onNavigateToMyPingScreen = {
                         navController.navigate(Route.MyPing)
-                    }, onNavigateToOtherPingScreen = {
-                        navController.navigate(Route.OtherPing)
-                    }
+                    },
+                    pingService = pingService,
+                    situation = it.toRoute<Route.Result>().situation
                 )
             }
 
             composable<Route.MyPing> {
                 MyPingScreen(
                     myPingService = myPingService,
-                    modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 41.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 20.dp, vertical = 41.dp)
                 )
             }
 

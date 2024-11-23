@@ -11,7 +11,7 @@ sealed interface Route {
     data object Input: Route
 
     @Serializable
-    data object Result: Route
+    data class Result(val situation: String): Route
 
     @Serializable
     data object MyPing: Route
