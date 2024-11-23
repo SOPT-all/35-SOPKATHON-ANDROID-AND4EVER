@@ -12,6 +12,7 @@ import org.sopt.and4ever.presentation.home.HomeScreen
 import org.sopt.and4ever.presentation.input.InputScreen
 import org.sopt.and4ever.presentation.myping.MyPingScreen
 import org.sopt.and4ever.presentation.mypingdetail.MyPingDetailScreen
+import org.sopt.and4ever.presentation.otherping.OtherPingScreen
 import org.sopt.and4ever.presentation.result.ResultScreen
 
 @Composable
@@ -60,6 +61,12 @@ fun JPNavigation(
 
         composable<Route.MyPingDetail> {
             MyPingDetailScreen(
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        composable<Route.OtherPing> {
+            OtherPingScreen(
                 modifier = Modifier.fillMaxSize()
             )
         }

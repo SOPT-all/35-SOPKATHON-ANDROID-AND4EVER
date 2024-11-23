@@ -18,4 +18,7 @@ sealed interface Route {
 
     @Serializable
     data class MyPingDetail(val id: Int): Route
+
+    @Serializable
+    data object OtherPing: Route
 }
