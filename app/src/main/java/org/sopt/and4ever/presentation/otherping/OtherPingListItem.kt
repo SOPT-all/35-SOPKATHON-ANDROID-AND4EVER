@@ -1,5 +1,6 @@
 package org.sopt.and4ever.presentation.otherping
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -24,7 +25,12 @@ import org.sopt.and4ever.core.theme.G06
 import org.sopt.and4ever.core.theme.G09
 
 @Composable
-fun OtherPingListItem(){
+fun OtherPingListItem(
+    content: String,
+    timeString: String
+){
+    val splitedTimeString = timeString.split(" ")
+    Log.d("fffff", splitedTimeString.toString())
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,7 +51,7 @@ fun OtherPingListItem(){
         Column(){
             Row {
                 Text(
-                    text = "2024.11.23.토",
+                    text = splitedTimeString[0] + "." + splitedTimeString[1],
                     color = G06,
                     style = Body01
                 )
@@ -53,7 +59,7 @@ fun OtherPingListItem(){
                 Spacer(modifier = Modifier.width(7.dp))
 
                 Text(
-                    text = "11:05 AM",
+                    text = splitedTimeString[3] + " " + if(splitedTimeString[4]=="오전") "AM" else "PM",
                     color = G06,
                     style = Body01
                 )
@@ -62,7 +68,7 @@ fun OtherPingListItem(){
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "ai가 생성한 핑계 텍스트 더미 ai가 생성한 핑계 텍스트 더미 ai가 생성한 텍스트 더...dddddddddddddddddddddddddddddddddddddddddddddd",
+                text = content,
                 color = G09,
                 style = Body04,
                 overflow = TextOverflow.Ellipsis,
@@ -75,5 +81,5 @@ fun OtherPingListItem(){
 @Preview
 @Composable
 fun OtherPingListItemPreview(){
-    OtherPingListItem()
+    OtherPingListItem("","")
 }
