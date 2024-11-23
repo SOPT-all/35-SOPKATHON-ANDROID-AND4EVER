@@ -123,7 +123,7 @@ fun ShowMyPingDetailScreen(
             modifier = Modifier
                 .padding(top = 20.dp, bottom = 14.dp)
                 .clip(RoundedCornerShape(50.dp))
-                .background(JPTheme.colors.g03)
+                .background(Color(0xFFFFEDEF))
                 .padding(vertical = 4.dp, horizontal = 10.dp),
         )
 

@@ -322,8 +322,8 @@ private fun MyPingItemChip(
 }
 
 fun formatDateTime(input: String): String {
-    val dateTime = LocalDateTime.parse(input, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-
+    val dateTime0 = LocalDateTime.parse(input, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+    val dateTime = dateTime0.plusHours(9)
     val formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
     val formattedDate = dateTime.format(formatter)
 
