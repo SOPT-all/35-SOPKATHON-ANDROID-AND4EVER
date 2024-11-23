@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -33,7 +34,9 @@ fun PinkTextBox(input: String){
         )
         Text(
             modifier = Modifier
-                .padding(horizontal = 34.dp, vertical = 16.dp),
+                .padding(horizontal = 34.dp, vertical = 16.dp)
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center,
             text = input,
             style = Body04,
             color = Color(0xFF171717)
