@@ -97,9 +97,10 @@ fun JPNavigation(
             composable<Route.MyPing> {
                 MyPingScreen(
                     myPingService = myPingService,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(horizontal = 20.dp, vertical = 41.dp)
+                    onNavigateToMyPingDetail = {
+                        navController.navigate(Route.MyPingDetail(it))
+                    },
+                    modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 41.dp)
                 )
             }
 
