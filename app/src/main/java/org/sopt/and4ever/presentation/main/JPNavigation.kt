@@ -100,7 +100,8 @@ fun JPNavigation(
 
             composable<Route.MyPingDetail> {
                 MyPingDetailScreen(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    onNavigateToMyPingScreen = { navController.navigate(Route.MyPing) }
                 )
             }
 

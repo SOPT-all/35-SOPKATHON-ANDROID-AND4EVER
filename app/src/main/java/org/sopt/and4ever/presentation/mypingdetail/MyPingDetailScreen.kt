@@ -42,6 +42,7 @@ import org.sopt.and4ever.core.util.state.noRippleClickable
 
 @Composable
 fun MyPingDetailScreen(
+    onNavigateToMyPingScreen: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MyPingDetailViewModel = viewModel()
 ) {
@@ -182,7 +183,9 @@ fun MyPingDetailScreen(
                 disabledContentColor = Color(0xFFFF4A63)
             ),
             contentPadding = PaddingValues(vertical = 16.dp),
-            onClick = {},
+            onClick = {
+                onNavigateToMyPingScreen()
+            },
         ) {
             Text(
                 text = "완료하기",
